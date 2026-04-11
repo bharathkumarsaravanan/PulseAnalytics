@@ -1,13 +1,36 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
+
+const routeAccess: Record<string, string[]> = {
+    "/dashboard": ["admin", "user"],
+    "/dashboard/analytics": ["admin", "user"],
+    "/dashboard/settings": ["admin"],
+}
+
+const publicRoutes = ["/login", "/signup"];
 
 export function middleware(request: NextRequest) {
-    const authCookie = request.cookies.get("auth");
-    const isAuthenticated = authCookie?.value === "true";
+    const accessToken = request.cookies.get("accessToken")?.value;
+    const userRole = request.cookies.get("role")?.value || "user";
+    const pathname:string = request.nextUrl.pathname;
 
-    if (!isAuthenticated && request.nextUrl.pathname.startsWith("/dashboard")) {
+    if (publicRoutes.includes(pathname)) {
+        return NextResponse.next();
+    }
+
+    if (!accessToken || !userRole) {
         return NextResponse.redirect(new URL("/login", request.url));
     }
 
-    return NextResponse.next();
+    const allowedRoles = routeAccess[pathname];
+
+    if (allowedRoles && !allowedRoles.includes(userRole)) {
+        return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
+
+    return NextResponse.next()
 }
+
+export const config = {
+  matcher: ['/dashboard/:path*']
+};

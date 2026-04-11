@@ -16,10 +16,10 @@ export default function DashboardLayout({
         <nav className="space-y-2">
           {
             sidebarItems.map((item, i) => (
-              <>
-              <ActiveLink key={i+item.label} href={item.href}>{item.label}</ActiveLink>
+              <div key={i+item.label}>
+              <ActiveLink  href={item.href}>{item.label}</ActiveLink>
               <br />
-              </>
+              </div>
             ))
           }
         </nav>
