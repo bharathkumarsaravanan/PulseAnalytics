@@ -1,7 +1,8 @@
+const serverURL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function api(path:string, options:RequestInit= {}, retry:boolean = true) {
     const isServer = typeof window === "undefined";
-    let fetchOptions = {
+    let fetchOptions: RequestInit  = {
         ...options,
         headers: {
             "Content-Type": "application/json",
@@ -17,12 +18,12 @@ export async function api(path:string, options:RequestInit= {}, retry:boolean = 
             ...fetchOptions,
             headers: {
                 ...fetchOptions.headers,
-                Cookie: cookieheader
-            } as HeadersInit,
+                    Cookie: cookieheader
+            },
             cache: "no-store"
         }
     }
-    const response = await fetch(`http://localhost:5000${path}`, {
+    const response = await fetch(`${serverURL}${path}`, {
         credentials: "include",
         ...fetchOptions
     })
@@ -30,7 +31,7 @@ export async function api(path:string, options:RequestInit= {}, retry:boolean = 
     if (response.status === 401 && retry) {
         console.log("reached inside retrying");
         try {
-            const refreshRes = await fetch("http://localhost:5000/auth/refresh", {
+            const refreshRes = await fetch(`${serverURL}/auth/refresh`, {
                 method: "POST",
                 credentials: "include",
                 ...fetchOptions

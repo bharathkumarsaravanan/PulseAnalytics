@@ -1,7 +1,12 @@
 'use client';
-import type { row } from 'all/utils/mockRows';
 import React from 'react';
 import type { RowComponentProps } from 'react-window';
+
+type row = {
+    id: number,
+    name: string,
+    email: string
+}
 
 interface RowData extends RowComponentProps {
  data: row[]; 

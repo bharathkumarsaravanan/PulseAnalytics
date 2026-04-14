@@ -21,7 +21,7 @@ Router.post("/login", (req, res) => {
       error: "Email and password required",
     });
   }
-
+  console.log(JWT_SECRET);
   if (email === user.email && password === user.password) {
     const token = jwt.sign({userId: "123", email}, JWT_SECRET, {
         expiresIn: "10m"
@@ -75,6 +75,7 @@ Router.post("/refresh", (req, res) => {
 
         res.cookie("accessToken", newToken);
         res.cookie("role", "admin");
+        console.log(newToken)
         return res.json({
             success: true,
             message: "New token has generated!"
