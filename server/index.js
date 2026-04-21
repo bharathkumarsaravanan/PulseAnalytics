@@ -3,6 +3,7 @@ const app = express();
 const authRoutes = require("./routes/auth.routes");
 const dashboardRoutes = require("./routes/dashboard.routes");
 const settingsRoutes = require("./routes/settings.routes");
+const campaignsRoutes = require("./routes/campaigns.routes");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 require('dotenv').config();
@@ -22,6 +23,7 @@ app.use((req, res, next) => {
 app.use("/auth", authRoutes);
 app.use("/dashboard", dashboardRoutes);
 app.use("/settings", settingsRoutes);
+app.use("/campaigns", campaignsRoutes);
 
 
 app.get("/", (req, res) => {

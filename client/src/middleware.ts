@@ -1,10 +1,9 @@
-import { NextResponse } from 'next/server'
-import { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
+import { sidebarItems } from './features/dashboard/config/sidebar';
 
-const routeAccess: Record<string, string[]> = {
-    "/dashboard": ["admin", "user"],
-    "/dashboard/settings": ["admin"],
-}
+let routeAccess: Record<string, string[]> = {};
+sidebarItems.forEach(item => routeAccess[item.href] = item.access);
 
 const publicRoutes = ["/login", "/signup"];
 

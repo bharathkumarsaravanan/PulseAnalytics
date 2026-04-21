@@ -17,7 +17,7 @@ const rows:row[] = Array.from({ length: 1000 }, (_, index) => ({
     email: `bharath-${index}@gmail.com`
 }));
 
-export default function DataTable() {
+export default function DataTable() { 
   const [switchState, setSwitchState] = useState<boolean>(false);
   const [query, setQuery] = useState<string>("");
   const debounceValue = useDebounce(query, 300);

@@ -5,8 +5,13 @@ export const sidebarItems = [
     access: ["admin", "user"]
   },
   {
-    label: "Analytics",
-    href: "/dashboard/analytics",
+    label: "Campaigns",
+    href: "/dashboard/campaigns",
+    access: ["admin", "user"]
+  },
+  {
+    label: "Events",
+    href: "/dashboard/events",
     access: ["admin", "user"]
   },
   {

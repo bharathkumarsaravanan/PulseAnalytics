@@ -1,14 +1,14 @@
 import { api } from "all/lib/api";
 
-export async function getDashboardData() {
-    const res = await api("/dashboard/stats", {
-        method: "get"
-    })
+export default async function getCampaignsData() {
+    const res = await api("/campaigns/", {
+        method: "POST",
+    });
 
     if (!res.ok) {
         const error = await res.json();
         throw new Error(error.message || "Request Failed");
     }
     const result = await res.json();
-    return result.data;
+    return result.data.campaignData;
 }

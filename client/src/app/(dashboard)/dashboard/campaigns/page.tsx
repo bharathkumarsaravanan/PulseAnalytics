@@ -1,5 +1,7 @@
+import CampaignsContainer from "all/features/campaigns/containers/CampaignsContainer"
+
 export default async function CampaignsPage() {
     return (
-        <div>Campaigns page</div>
+        <CampaignsContainer />
     )
-}
+} 

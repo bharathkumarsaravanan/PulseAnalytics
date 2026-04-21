@@ -1,5 +1,4 @@
 'use client';
-import React from 'react';
 import type { RowComponentProps } from 'react-window';
 
 type row = {
@@ -8,9 +7,6 @@ type row = {
     email: string
 }
 
-interface RowData extends RowComponentProps {
- data: row[]; 
-}
 
 function Row({ index, data, style }: RowComponentProps<{
     data: row[];

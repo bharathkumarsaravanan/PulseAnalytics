@@ -6,10 +6,11 @@ type ItemType = {
     access: string[]
 }
 
-export default function DashboardSideBar({ items }: {items: ItemType[]}) {
+export default function DashboardSideBar({ items, role }: {items: ItemType[], role: string}) {
+  const allowedItems = items.filter(item => item.access.includes(role));
   return (
     <nav className="space-y-2">
-      {items.map((item, i) => (
+      {allowedItems.map((item, i) => (
         <div key={i + item.label}>
           <ActiveLink href={item.href}>{item.label}</ActiveLink>
           <br />
