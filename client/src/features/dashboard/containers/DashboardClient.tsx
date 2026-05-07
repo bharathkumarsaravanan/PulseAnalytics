@@ -10,14 +10,10 @@ export default function DashboardClient() {
     queryFn: getDashboardData
   }); 
 
-  if (isPending) return <span>Loading...</span>;
-  if (isError) return <span>{error.message}</span>;
-
   return (
     <>
-      <h1 className='text-xl font-bold mb-4'>Dashboard</h1>
-      <DashboardStats {...data} />
-      <VisitorsChart chartData={data.trend} />
+      <DashboardStats isLoading={isPending} {...data} />
+      <VisitorsChart isEmpty={!data?.trend?.length} isLoading={isPending} chartData={data?.trend || []} />
     </>
   );
 }

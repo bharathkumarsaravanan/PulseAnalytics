@@ -1,3 +1,9 @@
+import EventContainer from "all/features/events/containers/EventsContainer";
+
 export default function AnalyticsPage() {
-  return <div>Events Page</div>;
+  return (
+    <div>
+      <EventContainer />
+    </div>
+  );
 }

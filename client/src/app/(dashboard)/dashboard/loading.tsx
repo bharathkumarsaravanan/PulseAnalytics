@@ -1,3 +1,4 @@
+import { Spinner } from "all/assets/icons/Spinner"
 export default function Loading() {
-    return <div>Loading Dashboard...</div>
+    return <div><Spinner /></div>
 }

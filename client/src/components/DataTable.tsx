@@ -1,8 +1,15 @@
 'use client';
 import { List } from 'react-window';
-import CampaignRow from './CampaignRow';
 import { ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
-import type { SortKey } from '../types/RowType';
+import type { ReactElement } from 'react';
+import type { SortKey } from '../features/campaigns/types/RowType';
+import type { RowComponentProps } from 'react-window';
+import { EmptyTableState } from 'all/assets/icons/EmptyTableState';
+import { Spinner } from 'all/assets/icons/Spinner';
+
+type RowComponentType<RowProps extends object> = (
+  props: RowComponentProps<RowProps>
+) => ReactElement | null;
 
 type THeadTypes = {
   id: string;
@@ -19,18 +26,32 @@ type SortClickPayload = { id: SortKey; order: SortOrder };
 export default function CampaignTable({
   rowCount,
   rowProps,
+  rowComponent,
   rowHeight,
   tableHeader,
   sortCols,
-  sortClick
+  sortClick,
+  isEmpty,
+  isLoading
 }: {
   rowCount: number;
   rowHeight: number;
   rowProps: any;
+  rowComponent: RowComponentType<any>;
   tableHeader: THeadTypes[];
   sortCols?: Record<string, 'asc' | 'desc' | 'idle'>;
   sortClick?: (payload: SortClickPayload) => void;
+  isEmpty: boolean;
+  isLoading: boolean;
 }) {
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (isEmpty) {
+    return <EmptyTableState />;
+  }
+
   const SortIcon = ({
     order,
     id
@@ -61,7 +82,7 @@ export default function CampaignTable({
   };
 
   return (
-    <div className='flex-1 min-h-0 border border-zinc-700 rounded-xl overflow-hidden'>
+    <div className='flex-1 min-h-0 border border-zinc-700 rounded-xl overflow-hidden mt-3'>
       {/* Header  */}
       <div className='sticky top-0 z-10 bg-zinc-900 border-b border-zinc-700'>
         <div className='flex'>
@@ -82,7 +103,7 @@ export default function CampaignTable({
       </div>
       <div className='h-full'>
         <List
-          rowComponent={CampaignRow}
+          rowComponent={rowComponent}
           rowCount={rowCount}
           rowProps={rowProps}
           rowHeight={rowHeight}

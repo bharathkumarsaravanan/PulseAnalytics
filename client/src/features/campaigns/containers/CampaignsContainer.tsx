@@ -1,14 +1,15 @@
 'use client';
 import getCampaignsData from 'all/api/campaigns.service';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import useDebounce from 'all/hooks/useDebounce';
 import SearchInput from 'all/features/dashboard/components/SearchInput';
-import CampaignTable from '../components/CampaignTable';
+import CampaignTable from '../../../components/DataTable';
 import type { CampaignRows, SortKey, FilterState } from '../types/RowType';
+import CampaignRow from '../components/CampaignRow';
 
 export default function CampaignsContainer() {
-  const {data, isPending, isError, error } = useQuery<CampaignRows[]>({
+  const {data, isPending, isError, error} = useQuery<CampaignRows[]>({
     queryKey: ["campaign"],
     queryFn: getCampaignsData
   })
@@ -106,7 +107,6 @@ export default function CampaignsContainer() {
     });
   };
 
-  if (isPending) return <div>loading...</div>;
 
   return (
     <div className='flex flex-col h-full min-h-0'>
@@ -132,6 +132,8 @@ export default function CampaignsContainer() {
       </div>
 
       <CampaignTable
+        isLoading={isPending}
+        isEmpty={!sorted?.length}
         tableHeader={[
           {
             id: 'campaign_id',
@@ -170,6 +172,7 @@ export default function CampaignsContainer() {
         rowProps={{ data: sorted }}
         sortCols={sortCols}
         sortClick={handleSort}
+        rowComponent={CampaignRow}
       />
     </div>
   );
