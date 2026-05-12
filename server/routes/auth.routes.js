@@ -37,8 +37,18 @@ Router.post("/login", (req, res) => {
         sameSite: "strict" // CSRF protection
     });
 
-    res.cookie("accessToken", token);
-    res.cookie("role", "admin");
+    res.cookie("accessToken", token, {
+          httpOnly: false,
+          secure: true, // REQUIRED for cross-site (HTTPS)
+          sameSite: 'none', // REQUIRED for cross-domain
+          path: '/'
+        });
+    res.cookie("role", "admin", {
+          httpOnly: false,
+          secure: true, // REQUIRED for cross-site (HTTPS)
+          sameSite: 'none', // REQUIRED for cross-domain
+          path: '/'
+        });
     
     return res.status(200).json({
       success: true,
@@ -73,8 +83,18 @@ Router.post("/refresh", (req, res) => {
             expiresIn: "10m"
         });
 
-        res.cookie("accessToken", newToken);
-        res.cookie("role", "admin");
+        res.cookie('accessToken', newToken, {
+          httpOnly: false,
+          secure: true, // REQUIRED for cross-site (HTTPS)
+          sameSite: 'none', // REQUIRED for cross-domain
+          path: '/'
+        });
+        res.cookie('role', 'admin', {
+          httpOnly: false,
+          secure: true, // REQUIRED for cross-site (HTTPS)
+          sameSite: 'none', // REQUIRED for cross-domain
+          path: '/'
+        });
         console.log(newToken)
         return res.json({
             success: true,
@@ -85,8 +105,18 @@ Router.post("/refresh", (req, res) => {
 
 Router.post("/logout", (req, res) => {
     res.clearCookie("refreshToken", { secure: true, sameSite: "strict" });
-    res.clearCookie("accessToken");
-    res.clearCookie("role");
+    res.clearCookie('accessToken', {
+      httpOnly: false,
+      secure: true, // REQUIRED for cross-site (HTTPS)
+      sameSite: 'none', // REQUIRED for cross-domain
+      path: '/'
+    });
+    res.clearCookie('role', {
+      httpOnly: false,
+      secure: true, // REQUIRED for cross-site (HTTPS)
+      sameSite: 'none', // REQUIRED for cross-domain
+      path: '/'
+    });
 
     return res.status(200).json({
         success: true,
