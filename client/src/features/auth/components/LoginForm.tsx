@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import Button from 'all/components/ui/Button';
 import Input from 'all/components/ui/Input';
 import { useMutation } from '@tanstack/react-query';
+import { startTransition } from "react";
 
 export default function LoginForm() {
   const {
@@ -18,7 +19,9 @@ export default function LoginForm() {
   const mutation = useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      router.push('/dashboard');
+      startTransition(() => {
+        router.push('/dashboard');
+      })
     }
   });
 

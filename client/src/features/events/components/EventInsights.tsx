@@ -30,7 +30,7 @@ export default function EventInsights({ totalEvents, clicks, views, topElements,
         <div className='grid grid-cols-1 md:grid-cols-3 gap-6 p-6 md:p-8'>
             {
               Object.entries(topElements).map(([key, val], i) => (
-                <Card header={key} context={val} />
+                <Card header={key} key={key} context={val} />
               ))
             }
         </div>

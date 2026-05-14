@@ -1,6 +1,4 @@
-import { redirect } from "next/navigation";
 
-const serverURL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function api(path:string, options:RequestInit= {}, retry:boolean = true) {
     const isServer = typeof window === "undefined";
@@ -25,29 +23,28 @@ export async function api(path:string, options:RequestInit= {}, retry:boolean = 
             cache: "no-store"
         }
     }
-    const response = await fetch(`${serverURL}${path}`, {
+    const response = await fetch(`/api${path}`, {
         credentials: "include",
         ...fetchOptions
     })
     if (response.status === 401 && retry) {
         if (isServer) {
+            const { redirect } = await import("next/navigation")
             redirect('/login')
         }
-        console.log("reached inside retrying");
         try {
-            const refreshRes = await fetch(`${serverURL}/auth/refresh`, {
+            const refreshRes = await fetch(`/auth/refresh`, {
                 ...fetchOptions,
                 method: "POST",
                 credentials: "include",
             });
 
             const result = await refreshRes.json();
-            console.log("result", result)
             if (result.success) {
                 return api(path, options, false);
             }
         } catch (er) {
-            console.error("Refresh failed")
+            console.log("Refresh failed")
         }
     }
 

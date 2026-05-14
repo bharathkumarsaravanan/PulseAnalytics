@@ -11,12 +11,20 @@ export function middleware(request: NextRequest) {
     const accessToken = request.cookies.get("accessToken")?.value;
     const userRole = request.cookies.get("role")?.value || "user";
     const pathname:string = request.nextUrl.pathname;
+    const unKnown = !accessToken || !userRole; 
+
+    if (pathname == "/") {
+        if (unKnown) {
+            return NextResponse.redirect(new URL("/login", request.url));
+        } 
+        return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
 
     if (publicRoutes.includes(pathname)) {
         return NextResponse.next();
     }
 
-    if (!accessToken || !userRole) {
+    if (unKnown) {
         return NextResponse.redirect(new URL("/login", request.url));
     }
 
@@ -35,5 +43,5 @@ export function middleware(request: NextRequest) {
 }   
 
 export const config = {
-  matcher: ['/dashboard/:path*']
+  matcher: ['/dashboard/:path*', "/"]
 };

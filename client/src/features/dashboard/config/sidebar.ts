@@ -7,16 +7,11 @@ export const sidebarItems = [
   {
     label: "Campaigns",
     href: "/dashboard/campaigns",
-    access: ["admin", "user"]
+    access: ["admin"]
   },
   {
     label: "Events",
     href: "/dashboard/events",
     access: ["admin", "user"]
-  },
-  {
-    label: "Settings",
-    href: "/dashboard/settings",
-    access: ["admin"]
-  },
-];
+  }
+]; 

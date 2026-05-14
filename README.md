@@ -1,162 +1,217 @@
 # 🚀 PulseAnalytics
 
-A lightweight event tracking system that captures real user interactions from a website and visualizes them in near real-time.
+A lightweight full-stack analytics platform that captures real user interactions from websites and visualizes them through a performant real-time dashboard.
+
+Built with a unified Next.js + Express architecture for scalable authentication, event tracking, and analytics processing.
 
 ---
 
-## 📌 Overview
+# 📌 Overview
 
 PulseAnalytics is a simplified analytics platform inspired by tools like Google Analytics.
-It tracks user behavior (clicks, views) from a real website using a custom tracking script (integrated via GTM or direct injection) and displays insights through a performant dashboard.
+
+It enables websites to send interaction events (clicks, page views, etc.) through a lightweight tracking script and provides a real-time dashboard to analyze user behavior.
 
 ---
 
-## 🧠 How It Works
+# 🧠 System Architecture
 
 ```plaintext
-Website (Sample App)
+Tracked Website
         ↓
-Tracking Script (GTM / injected JS)
+Tracking Script (Injected JS / GTM)
         ↓
-Backend API (Node.js + Express)
+Express API (/api/*)
         ↓
 MongoDB (Event Storage)
         ↓
-Frontend Dashboard (Next.js)
+Next.js Dashboard
 ```
 
 ---
 
-## ✨ Features
+# 🏗️ Current Architecture
 
-### 🔹 Event Tracking
-
-* Captures real user interactions (clicks, views)
-* Tracks element type and page context
-* Works via injected script / GTM
-
-### 🔹 Real-Time Dashboard
-
-* Live updates using polling (every 3 seconds)
-* Event insights:
-
-  * Total events
-  * Clicks vs Views
-  * Top elements
-* Raw event table
-
-### 🔹 Performance Optimization
-
-* Handles large datasets efficiently
-* Virtualized rendering (react-window)
-* Memoized computations for analytics
-
-### 🔹 Scalable Architecture
-
-* Clean feature-based frontend structure
-* Centralized API layer
-* Separation of UI and computation logic
-
----
-
-## 🛠️ Tech Stack
-
-### Frontend
-
-* Next.js (App Router)
-* React + TypeScript
-* React Query
-* Tailwind CSS
-
-### Backend
-
-* Node.js + Express
-* MongoDB (Mongoose)
-
-### Tracking
-
-* Custom JavaScript tracker
-* GTM integration (optional)
-
----
-
-## 📂 Project Structure
+PulseAnalytics now uses a unified single-domain architecture:
 
 ```plaintext
-client/
-  src/
-    app/
-    features/
-    components/
-    lib/
+Browser
+   ↓
+Node.js Server
+   ├── Next.js Frontend
+   └── Express API
+```
 
-server/
-  src/
-    routes/
-    models/
-    db/
+### ✅ Benefits
+
+- Same-domain frontend + backend
+- Secure HTTP-only cookie authentication
+- No CORS complexity
+- Cleaner deployment setup
+- Middleware-based route protection
+- Easier scalability and maintenance
+
+---
+
+# ✨ Features
+
+## 🔹 Event Tracking
+
+- Captures real user interactions
+- Tracks:
+  - Click events
+  - Page views
+  - Element type
+  - Current page path
+- Lightweight embeddable tracking script
+- GTM integration support
+
+---
+
+## 🔹 Authentication & Authorization
+
+- JWT-based authentication
+- HTTP-only cookie auth
+- Middleware-protected dashboard routes
+- Role-based route access support
+
+---
+
+## 🔹 Real-Time Analytics Dashboard
+
+- Near real-time updates using polling
+- Dashboard insights:
+  - Total events
+  - Click vs View breakdown
+  - Top interacted elements
+  - Event activity table
+- Responsive dashboard UI
+
+---
+
+## 🔹 Performance Optimization
+
+- Virtualized rendering using `react-window`
+- Memoized analytics calculations
+- Efficient polling architecture
+- Optimized React rendering patterns
+
+---
+
+## 🔹 Scalable Frontend Architecture
+
+- Feature-based architecture
+- Centralized API layer
+- Reusable UI components
+- Separation of UI and business logic
+- Modular analytics computation
+
+---
+
+# 🛠️ Tech Stack
+
+## Frontend
+
+- Next.js (App Router)
+- React
+- TypeScript
+- React Query
+- Tailwind CSS
+
+---
+
+## Backend
+
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT Authentication
+
+---
+
+## Tracking
+
+- Custom JavaScript tracker
+- Google Tag Manager integration (optional)
+
+---
+
+# 📂 Project Structure
+
+```plaintext
+PulseAnalytics/
+│
+├── client/                 # Next.js frontend
+│   ├── src/
+│   │   ├── app/
+│   │   ├── features/
+│   │   ├── components/
+│   │   └── lib/
+│
+├── server/                 # Express backend
+│   ├── routes/
+│   ├── db/
+│   ├── middlewares/
+│   └── models/
+│
+├── server.js               # Unified server entry
+├── package.json
+└── .env
 ```
 
 ---
 
-## ⚙️ Setup
+# ⚙️ Setup
 
-### 1. Clone repo
+## 1. Clone Repository
 
 ```bash
 git clone https://github.com/your-username/pulseanalytics
+cd pulseanalytics
 ```
 
 ---
 
-### 2. Backend
+## 2. Install Dependencies
 
 ```bash
-cd server
 npm install
 ```
 
-Create `.env`:
+---
+
+## 3. Environment Variables
+
+Create a root `.env` file:
 
 ```env
-MONGO_URL=your_mongo_url
+MONGO_URL=your_mongodb_connection
+JWT_SECRET=your_secret
 ```
 
-Run:
+---
+
+## 4. Run Development Server
 
 ```bash
 npm run dev
 ```
 
----
+Application runs on:
 
-### 3. Frontend
-
-```bash
-cd client
-npm install
-```
-
-Create `.env`:
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:5000
-```
-
-Run:
-
-```bash
-npm run dev
+```plaintext
+http://localhost:3000
 ```
 
 ---
 
-## 📡 Tracker Script
+# 📡 Tracker Script
 
 ```js
 (function () {
   function track(type, element) {
-    fetch("YOUR_BACKEND_URL/events/track", {
+    fetch("/api/events/track", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -181,42 +236,87 @@ npm run dev
 
 ---
 
-## 🚀 Deployment
+# 🔐 Authentication Flow
 
-* Frontend: Vercel
-* Backend: Render
-
----
-
-## 💡 Key Engineering Decisions
-
-* Used polling instead of WebSockets for simplicity and reliability
-* Implemented virtualization to handle large datasets efficiently
-* Separated data processing logic from UI for maintainability
-* Designed system as modular feature-based architecture
-
----
-
-## 🎯 What This Project Demonstrates
-
-* Real-world frontend architecture
-* Performance optimization strategies
-* Full-stack system design thinking
-* Handling large-scale data efficiently
-* Building production-ready SaaS applications
+```plaintext
+Login Request
+      ↓
+Express Auth API
+      ↓
+JWT Generated
+      ↓
+HTTP-only Cookie Set
+      ↓
+Next.js Middleware Validation
+      ↓
+Protected Dashboard Access
+```
 
 ---
 
-## 👨‍💻 Author
+# 🚀 Deployment
 
-Bharath Kumar
-Frontend Engineer (4+ years)
+The application is designed for unified deployment.
+
+## Recommended Platforms
+
+- Railway
+- VPS
+- Render
+- Docker
+- AWS EC2
 
 ---
 
-## ⭐ Future Improvements
+# 💡 Key Engineering Decisions
 
-* WebSocket-based real-time updates
-* Multi-project support
-* Authentication for tracked sites
-* Advanced analytics (funnels, sessions)
+- Unified Next.js + Express architecture for same-domain auth
+- HTTP-only cookie authentication for security
+- Polling used instead of WebSockets for simplicity and reliability
+- Virtualized rendering for handling large datasets efficiently
+- Modular feature-based frontend architecture
+- Middleware-based protected routing
+- Centralized API abstraction layer
+
+---
+
+# 🎯 What This Project Demonstrates
+
+- Full-stack application architecture
+- Real-world authentication systems
+- Middleware-based route protection
+- Secure cookie-based auth flow
+- Frontend performance optimization
+- Scalable analytics dashboard design
+- System design thinking
+- Production-oriented SaaS architecture
+
+---
+
+# 🔮 Future Improvements
+
+- WebSocket-based real-time updates
+- Multi-project support
+- Session tracking
+- User funnels and conversion analytics
+- Heatmaps
+- Custom dashboard widgets
+- Advanced RBAC system
+- Dockerized deployment
+- Distributed event processing
+
+---
+
+# 👨‍💻 Author
+
+Bharath Kumar  
+Frontend / Full-Stack Engineer (4+ years)
+
+- LinkedIn: https://www.linkedin.com/in/bharath-saravanan-11690b213
+- GitHub: https://github.com/bharathkumarsaravanan
+
+---
+
+# ⭐ Project Goal
+
+PulseAnalytics was built to demonstrate real-world frontend engineering, scalable architecture patterns, performance optimization, and production-style SaaS development using modern JavaScript technologies.

@@ -9,6 +9,7 @@ Router.post('/', verifyAccessToken, async (req, res) => {
     const events = await Event.find().sort({ timestamp: -1 }).limit(2000);
     return res.status(200).json({ success: true, data: { events } });
   } catch (er) {
+    console.log("error", er)
     return res.status(500).json({ error: 'Failed to fetch Events!' });
   }
 });
